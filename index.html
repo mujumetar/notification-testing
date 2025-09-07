@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="index.js"></script> -->
+</head>
+
+<body>
+    <button>click</button>
+</body>
+<script>
+    const button = document.querySelector("button")
+
+    button.addEventListener("click", () => {
+        Notification.requestPermission().then(perm => {
+            // alert(perm)
+            if (perm === "granted") {
+                new Notification("example notification", {
+                    body: "new offer available get best price from today!!",
+                    icon: "logo.png",
+                    tag: "offers"
+                })
+            }
+        })
+    })
+
+
+    let notification
+    let interval
+    document.addEventListener("visibilitychange", () => {
+        // let time = date.now()
+
+        if (document.visibilityState === "hidden") {
+            const leavedtime = new Date()
+          interval =  setInterval(() => {
+                notification = new Notification("come back please", {
+                    body: `your coupen was expired in ${Math.round((new Date() - leavedtime) / 1000)}`,
+                    icon: "logo.png",
+                    tag: "come back"
+                })
+            }, 100)
+        }
+        else {
+          if(interval) clearInterval(interval)
+           if(notification) notification.close()
+        }
+    })
+</script>
+
+</html>
